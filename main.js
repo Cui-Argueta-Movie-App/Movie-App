@@ -26,45 +26,50 @@ let selectMovie = document.querySelectorAll('.new-movie');
 //TODO: ON-LOAD
 $(function() {
 
+    const searchData = []
 
-    //TODO: THIS FUNCTIONS RENDERS THE INFO TO ALL MOVIES WITH THE SAME TITLE
-    searchBtn.addEventListener('click', function (e) {
-
-        e.preventDefault();
-
-        const token = OMDB_API;
-        let userInput = searchInput.value;
-        const URL = `https://www.omdbapi.com/?apikey=${token}&s=${userInput}`
-
-        fetch(URL)
+    const fetchSearchData = (url) => {
+        fetch(url)
             .then(response => {
+                console.log(response);
                 if (!response.ok) {
                     throw Error('ERROR');
                 }
                 return response.json();
             })
             .then(data => {
-                const searchData = data.Search;
-
-                let html = "";
-                for (let i = 0; i < searchData.length; i++) {
-                    html += `<div id="${searchData[i].imdbID}" class="new-movie">
-                        <h1>${searchData[i].Title}</h1>
-                         <h6>${searchData[i].Year}</h6>
-                        </div>`
-
-                }
-
-                localStorage.setItem('movie', JSON.stringify(html));
-
-                return movieSelection.innerHTML = html;
+                console.log(data);
+                return data;
             });
+    }
 
-    });
+    const fetchMovieData = (url) => {
+        fetch(url)
+            .then(response => {
+                console.log(response);
+                if (!response.ok) {
+                    throw Error('ERROR');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+                return data;
+            });
+    }
+
+    const fetchBothData = () => {
+        const token = OMDB_API;
+        let userInput = searchInput.value;
+        const searchURL = `https://www.omdbapi.com/?apikey=${token}&s=${userInput}`;
+        const movieInfoURL = `http://www.omdbapi.com/?apikey=${token}&i=`;
+
+        fetchSearchData(searchURL);
+    }
+    fetchBothData()
 
 
 
-    //TODO: THIS FUNCTION WILL DISPLAY THE INFORMATION BASED ON THE TITLE THE USER SELECTED (CLICK)
 
 
 });
