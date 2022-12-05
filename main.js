@@ -24,3 +24,43 @@ let plot = document.querySelectorAll('.plot');
 
 // http://www.omdbapi.com/?apikey=eecd0f67&t=shrek
 
+
+
+
+
+
+searchBtn.addEventListener('click', function (e) {
+
+    e.preventDefault();
+
+    const token = OMDB_API;
+    let userInput = searchInput.value;
+    const URL = `https://www.omdbapi.com/?apikey=${token}&s=${userInput}`
+
+    fetch(URL)
+        .then(response => {
+            if (!response.ok) {
+                throw Error('ERROR');
+            }
+            return response.json();
+        })
+        .then(data => {
+            const searchData = data.Search;
+
+            let html = "";
+            for (let i = 0; i < searchData.length; i++) {
+                html += `<div id="${searchData[i].imdbID}" class="new-movie">
+                        <h1>${searchData[i].Title}</h1>
+                         <h6>${searchData[i].Year}</h6>
+                        </div>`
+
+            }
+            return movieSelection.innerHTML = html;
+        });
+
+});
+
+
+
+
+
