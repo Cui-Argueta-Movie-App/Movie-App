@@ -1,3 +1,5 @@
+"use strict";
+
 //call DOM
 let homeIcon = document.getElementById("home");
 let searchInput = document.getElementById("search-input");
@@ -18,5 +20,7 @@ let plot = document.querySelectorAll('.plot');
 
 //OMDb API
 
+// https://www.omdbapi.com/?apikey=eecd0f67&s=avengers
 
+// http://www.omdbapi.com/?apikey=eecd0f67&t=shrek
 
