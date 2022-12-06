@@ -7,6 +7,7 @@ const searchURl = BASE_URL + '/search/movie?&api_key='+ tmdb;
 //DOM
 
 let main = document.getElementById('main');
+let detail = document.getElementById('detail');
 let inputSearch = document.getElementById('input-search');
 let btnSearch = document.getElementById('btn-search');
 let form = document.getElementById('form')
@@ -50,7 +51,12 @@ function showmovies(data){
 function openNav(movie){
     let id = movie.id;
     fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${tmdb}`).then(res => res.json()).then(data=>{
-        (console.log(data))
+        detail.innerHTML='';
+        console.log(data)
+        data.forEach(movie=>{
+            const {title,poster_path,vote_average,overview,id} = movie
+        })
+
     })
 }
 
@@ -64,5 +70,4 @@ btnSearch.addEventListener('click',function(e){
 
 })
 
-//show detail
 
