@@ -33,7 +33,6 @@ function showmovies(data){
           <img src="${IMG_URL+poster_path}" alt="no-poster.png">
           <h3>${title}</h3>
           <p>${vote_average}</p>
-          <p>Overview:<br>${overview}</p>
           <button class="know-more" id="${id}">Know More</button
             </div>
         `
@@ -54,7 +53,10 @@ function openNav(movie){
 
         const movieDetail = data;
         movieDescHTML(movieDetail);
+        let visId = document.getElementById('visually-hidden')
+        if(visId.textContent != 0){
 
+        }
     })
 }
 
@@ -63,6 +65,21 @@ const movieDescHTML = (data) => {
     console.log(detail);
     console.log(data);
 
+    const {original_title, overview, release_date, tagline, poster_path, id } = data;
+
+    const movieElement = document.createElement('div');
+    movieElement.innerHTML =
+        `<div>
+              <img src="${IMG_URL+poster_path}" alt="no-poster.png">
+              <p class="visually-hidden" id="visually-hidden">${id}</p>
+              <h3>${original_title}</h3>
+              <p>${tagline}</p>
+              <p>${release_date}</p>
+              <p>${overview}</p>
+              <p>${data.genres[0].name}</p>
+            </div>`
+
+    detail.appendChild(movieElement)
 
 
 }
