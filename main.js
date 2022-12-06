@@ -51,9 +51,7 @@ $(function() {
                     html += `<div id="${searchData[i].imdbID}" class="new-movie">
                         <h1>${searchData[i].Title}</h1>
                          <h6>${searchData[i].Year}</h6>
-                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                            Launch demo modal
-                         </button>
+                         <button type="button" class="add">add</button>
                         </div>`
 
                 }
@@ -64,7 +62,10 @@ $(function() {
             });
 
     });
-
+let add = document.querySelectorAll('.add');
+add.addEventListener('click',function (){
+    alert(this.value);
+})
 
 
     //TODO: THIS FUNCTION WILL DISPLAY THE INFORMATION BASED ON THE TITLE THE USER SELECTED (CLICK)

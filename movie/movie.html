@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Movie</title>
+  <!-- CSS only -->
+  <link rel="stylesheet" href="movie.css">
+
+</head>
+
+<body>
+  <div id="loader"></div>
+
+  <header>
+    <form id="'form">
+      <input id="input-search" class='search' type="text" placeholder="">
+      <button id="btn-search" class="search" >Search</button>
+    </form>
+  </header>
+
+
+  <!-- movies -->
+  <main id="main"></main>
+
+
+
+
+
+
+
+
+  <!-- JavaScript Bundle with Popper -->
+  <script src="../keys.js"></script>
+  <script src="movie.js"></script>
+  <!-- remove loading -->
+  <script>
+    // var loader = document.getElementById('loader');
+    // window.addEventListener('load', function () {
+    //   loader.style.display = 'none';
+    // })
+    document.onreadystatechange = function () {
+      if (document.readyState !== "complete") {
+        document.querySelector("body").style.visibility = "hidden";
+        document.querySelector("#loader").style.visibility = "visible";
+      } else {
+        setTimeout(() => {
+          document.querySelector("#loader").style.display = "none";
+          document.querySelector("body").style.visibility = "visible";
+        }, 1000);
+
+      }
+    };
+  </script>
+
+</body>
+
+</html>
