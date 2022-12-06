@@ -12,6 +12,7 @@ let inputSearch = document.getElementById('input-search');
 let btnSearch = document.getElementById('btn-search');
 let form = document.getElementById('form')
 
+
 getMovies(tmdb_API_URL);
 
 function getMovies(url){
@@ -28,15 +29,13 @@ function showmovies(data){
         const movieElement = document.createElement('div');
         movieElement.classList.add('container');
         movieElement.innerHTML =`
-        <div class="row">
-        <div class="card">
+    <div>
           <img src="${IMG_URL+poster_path}" alt="no-poster.png">
           <h3>${title}</h3>
           <p>${vote_average}</p>
           <p>Overview:<br>${overview}</p>
           <button class="know-more" id="${id}">Know More</button
             </div>
-      </div>
         `
 
         main.appendChild(movieElement)
@@ -51,23 +50,30 @@ function showmovies(data){
 function openNav(movie){
     let id = movie.id;
     fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${tmdb}`).then(res => res.json()).then(data=>{
-        detail.innerHTML='';
         console.log(data)
-        data.forEach(movie=>{
-            const {title,poster_path,vote_average,overview,id} = movie
-        })
+
+        const movieDetail = data;
+        movieDescHTML(movieDetail);
 
     })
 }
 
 
+const movieDescHTML = (data) => {
+    console.log(detail);
+    console.log(data);
+
+
+
+}
+
+
 //search
-btnSearch.addEventListener('click',function(e){
+btnSearch.addEventListener('click',function(e) {
     e.preventDefault();
     // alert("click")
     let name = inputSearch.value;
-    getMovies(searchURl+'&query='+name)
-
-})
+    getMovies(searchURl + '&query=' + name);
+});
 
 
