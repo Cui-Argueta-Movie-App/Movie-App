@@ -15,16 +15,14 @@
   <header>
     <form id="'form">
       <input id="input-search" class='search' type="text" placeholder="">
-      <button id="btn-search" class="search" >Search</button>
+      <button id="btn-search" class="search" type="button">Search</button>
     </form>
   </header>
 
 
   <!-- movies -->
+  <div id="detail"></div>
   <main id="main"></main>
-
-
-
 
 
 
@@ -35,10 +33,10 @@
   <script src="movie.js"></script>
   <!-- remove loading -->
   <script>
-    // var loader = document.getElementById('loader');
-    // window.addEventListener('load', function () {
-    //   loader.style.display = 'none';
-    // })
+  // var loader = document.getElementById('loader');
+  // window.addEventListener('load', function () {
+  //   loader.style.display = 'none';
+  // })
     document.onreadystatechange = function () {
       if (document.readyState !== "complete") {
         document.querySelector("body").style.visibility = "hidden";
@@ -48,10 +46,9 @@
           document.querySelector("#loader").style.display = "none";
           document.querySelector("body").style.visibility = "visible";
         }, 1000);
-
       }
     };
-  </script>
+</script>
 
 </body>
 

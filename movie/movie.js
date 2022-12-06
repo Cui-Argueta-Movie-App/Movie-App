@@ -3,7 +3,7 @@ const tmdb = TMDB_API;
 const BASE_URL = 'https://api.themoviedb.org/3';
 const tmdb_API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&api_key='+ tmdb;
 const IMG_URL = 'https://image.tmdb.org/t/p/w500';
-const searchURl = BASE_URL + '/search/movie?'+ tmdb;
+const searchURl = BASE_URL + '/search/movie?&api_key='+ tmdb;
 //DOM
 
 let main = document.getElementById('main');
@@ -23,7 +23,7 @@ function getMovies(url){
 function showmovies(data){
     main.innerHTML = "";
     data.forEach(movie => {
-        const {title,poster_path,vote_average,overview} = movie
+        const {title,poster_path,vote_average,overview,id} = movie
         const movieElement = document.createElement('div');
         movieElement.classList.add('container');
         movieElement.innerHTML =`
@@ -33,36 +33,36 @@ function showmovies(data){
           <h3>${title}</h3>
           <p>${vote_average}</p>
           <p>Overview:<br>${overview}</p>
-          <a href="" class="btn">Read More</a>
-        </div>
+          <button class="know-more" id="${id}">Know More</button
+            </div>
       </div>
         `
 
         main.appendChild(movieElement)
+
+        document.getElementById(id).addEventListener('click', () => {
+            console.log(id)
+            openNav(movie)
+        })
     });
 }
+//more info
+function openNav(movie){
+    let id = movie.id;
+    fetch(`https://api.themoviedb.org/3/movie/${id}?api_key=${tmdb}`).then(res => res.json()).then(data=>{
+        (console.log(data))
+    })
+}
+
 
 //search
-// btnSearch.addEventListener('click',function(e){
-//     e.preventDefault();
-//     // alert("click")
+btnSearch.addEventListener('click',function(e){
+    e.preventDefault();
+    // alert("click")
+    let name = inputSearch.value;
+    getMovies(searchURl+'&query='+name)
 
-//     let movieName = inputSearch.value;
-   
-//     getMovies(searchURl + '&query='+ movieName)
+})
 
+//show detail
 
-// })
-
-// form.addEventListener('submit', (e) => {
-//     e.preventDefault();
-//
-//     const searchTerm = inputSearch.value;
-//
-//     if(searchTerm) {
-//         getMovies(searchURL+'&query='+searchTerm)
-//     }else{
-//         alert('not !!!')
-//     }
-//
-// })
