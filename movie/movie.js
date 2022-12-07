@@ -1,3 +1,16 @@
+document.onreadystatechange = function () {
+    if (document.readyState !== "complete") {
+        document.querySelector("body").style.visibility = "hidden";
+        document.querySelector("#loader").style.visibility = "visible";
+    } else {
+        setTimeout(() => {
+            document.querySelector("#loader").style.display = "none";
+            document.querySelector("body").style.visibility = "visible";
+        }, 1000);
+    }
+};
+
+
 const tmdb = TMDB_API;
 const BASE_URL = 'https://api.themoviedb.org/3';
 const tmdb_API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&api_key='+ tmdb;
@@ -26,17 +39,22 @@ function showmovies(data){
     data.forEach(movie => {
         const {title,poster_path,vote_average,overview,id} = movie
         const movieElement = document.createElement('div');
+        movieElement.setAttribute("id","searchListItem");
         movieElement.classList.add('container');
         movieElement.innerHTML =`
-    <div>
-          <img src="${IMG_URL+poster_path}" alt="no-poster.png">
-          <h3>${title}</h3>
-          <p>${vote_average}</p>
-          <button class="know-more" id="${id}">Know More</button>
-            </div>
-        `
+            <div class="card" style="width: 18rem;">
+              <img src="${IMG_URL+poster_path}" class="card-img-top" alt="no-poster.png">
+              <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text">${vote_average}</p>
+                 <button class="btn btn-outline-success" type="submit" id="${id}">More Info</button>
+              </div>
+            </div>`
 
-        main.appendChild(movieElement)
+
+
+
+        main.appendChild(movieElement);
 
         document.getElementById(id).addEventListener('click', () => {
             console.log(id)
@@ -68,20 +86,27 @@ const movieDescHTML = (data) => {
     const {original_title, overview, release_date, tagline, poster_path, id } = data;
 
     const movieElement = document.createElement('div');
+    movieElement.setAttribute("id","movieDescCard");
     movieElement.innerHTML =
-        `<div>
-        <span id="close" onclick="this.parentNode.parentNode.remove(); return false;">Close</span>
-              <img src="${IMG_URL+poster_path}" alt="no-poster.png">
-              <p class="visually-hidden" id="visually-hidden">${id}</p>
-              <h3>${original_title}</h3>
-              <p>${tagline}</p>
-              <p>${release_date}</p>
-              <p>${overview}</p>
-              <p>${data.genres[0].name}</p>
-              <span class="add" id="add${id}">Add</span>
-              <span class="del" id="del${id}">del</span>
-
-            </div>`
+        `<div class="card mb-3" style="max-width: 100%; height: 100%;">
+      <div class="row g-0">
+        <div class="col-md-5">
+          <img src="${IMG_URL+poster_path}" class="img-fluid rounded-start" alt="...">
+          <span id="close" onclick="this.parentNode.parentNode.remove(); return false;"><i class="fa-solid fa-x"></i></span>
+        </div>
+        <div class="col-md-7">
+          <div class="card-body">
+          <p class="visually-hidden" id="visually-hidden">${id}</p>
+            <h5 class="card-title">${original_title}</h5>
+            <p class="card-text">${tagline}</p>
+            <p class="card-text">${release_date}</p>
+            <h6 class="card-text">${overview}</h6>
+            <p class="card-text"><small class="text-muted">${data.genres[0].name}</small>, <small class="text-muted">${data.genres[1].name}</small>, <small class="text-muted">${data.genres[2].name}</small></p>
+            <button class="btn btn-outline-success add" type="submit" id="add${id}">Add</button>
+          </div>
+        </div>
+      </div>
+    </div>`
 
     detail.appendChild(movieElement)
 

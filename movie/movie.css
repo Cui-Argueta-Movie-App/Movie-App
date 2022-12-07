@@ -1,6 +1,6 @@
-/*.card  {*/
-/*    visibility: hidden;*/
-/*}*/
-/*.active {*/
-/*    visibility: visible;*/
-/*}*/
+#movieDescCard #close {
+    position: absolute;
+    left: 30px;
+    font-size: 2rem;
+    color: white;
+}
