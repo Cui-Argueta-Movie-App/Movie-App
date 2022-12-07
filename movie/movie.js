@@ -86,11 +86,12 @@ const movieDescHTML = (data) => {
     movieElement.setAttribute("id","movieDescCard");
     movieElement.innerHTML =
         `<div class="card mb-3" style="max-width: 100%; height: 100%;">
+      <button type="button" class="btn-close p-0 fs-5" aria-label="Close" id="close" onclick="this.parentNode.parentNode.remove(); return false;"></button>
+
   <div class="row g-0">
   
     <div class="col-md-5">
       <img src="${IMG_URL+poster_path}" class="rounded-start w-100" alt="...">
-      <button type="button" class="btn-close p-0 fs-5" aria-label="Close" id="close" onclick="this.parentNode.parentNode.remove(); return false;"></button>
     </div>
     
     <div class="col-md-7 d-flex flex-column">
@@ -123,14 +124,14 @@ const movieDescHTML = (data) => {
     //add
     document.getElementById(`add${id}`).addEventListener('click', () => {
         console.log(id)
-        put(data);
+        post(data);
     })
 
 
 }
 
-//put
-function put(data){
+//POST
+function post(data){
     const {original_title, overview, release_date, tagline, id} = data;
     console.log("put: " + data.id);
     fetch('https://coffee-burnt-hurricane.glitch.me/movies',{
