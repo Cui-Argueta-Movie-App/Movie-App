@@ -4,3 +4,7 @@
     font-size: 2rem;
     color: white;
 }
+
+#searchListItem {
+    margin: 5rem 1rem 1rem;
+}

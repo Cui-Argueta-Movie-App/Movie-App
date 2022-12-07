@@ -185,15 +185,18 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
             mlist.setAttribute("id","searchListItem");
             mlist.classList.add('container');
             mlist.innerHTML =`
-                                <div class="card" style="width: 18rem;">
-                                  <img src="${IMG_URL+poster_path}" class="card-img-top" alt="...">
-                                  <div class="card-body">
-                                    <h5 class="card-title">${title}</h5>
-                                    <p class="card-text">${vote_average}</p>
-                                    <button class="btn btn-outline-success" type="submit" id="edit${id}">Edit</button>
-                                    <button class="btn btn-outline-success" type="submit" id="del${id}">Delete</button>
-                                  </div>
-                              </div>`
+                <div class="col">
+                        <div class="card">
+                          <img src="${IMG_URL+poster_path}"
+                               alt="">
+                          <div class="card-body">
+                            <h5 class="card-title">${title}</h5>
+                            <p class="card-text">${vote_average}</p>
+                            <button class="btn btn-outline-success" type="submit" id="edit${id}">Edit</button>
+                            <button class="btn btn-outline-success" type="submit" id="del${id}">Delete</button>
+                          </div>
+                        </div>
+                      </div>`
 
             document.getElementById('watchlist').appendChild(mlist);
 
