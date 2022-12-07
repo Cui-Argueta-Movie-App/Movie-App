@@ -24,6 +24,7 @@ let inputSearch = document.getElementById('input-search');
 let btnSearch = document.getElementById('btn-search');
 let form = document.getElementById('form');
 let watchlistEl = document.getElementById('watchlist');
+let resultEl = document.getElementById('resultSearch');
 
 
 getMovies(tmdb_API_URL);
@@ -33,6 +34,12 @@ function getMovies(url){
         //console.log(data);
         showmovies(data.results);
     })
+}
+
+const showResult = (userInput) => {
+    let html = "";
+    html += `<h3 class="text-muted">Results for: "${userInput.toLowerCase()}"</h3>`
+    return resultEl.innerHTML = html;
 }
 
 function showmovies(data){
@@ -143,7 +150,8 @@ function post(data){
     })
         .then(res=>{
             if(res.ok){
-                alert("Add to your list!")
+                console.log(res.ok);
+                alert("Added to your Watchlist!");
             }
         })
 }
@@ -155,6 +163,7 @@ btnSearch.addEventListener('click',function(e) {
     // alert("click")
     let name = inputSearch.value;
     getMovies(searchURl + '&query=' + name);
+    showResult(name);
 });
 
 //watch list
@@ -196,27 +205,55 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
                 id = movie.id;
             }
             document.getElementById('watchlist').appendChild(mlist);
-            // console.log(movie.movie.movie)
-            // console.log(id)
-            movie.title = "new title";
-            movie.original_title = "new title"
-            //edit
-            document.getElementById(`edit${id}`).addEventListener('click', () => {
-                console.log(movie)
-                // console.log(overview);
-                fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
-                    method:"PUT",
-                    headers:{
-                        'Content-type':'application/json'
-                    },
-                    body: JSON.stringify({movie}),
-                })
-                    .then(res=>{
-                        if(res.ok){
-                            alert("Add to your list!")
-                        }
-                    })
+
+
+            $(`#edit${movie.id}`).click(e => {
+                e.preventDefault();
+                console.log(movie);
+                console.log("click");
+                let html = "";
+                html += `<div class="card" style="width: 18rem;">
+                                  <img src="${IMG_URL + movie.poster_path}" class="card-img-top" alt="...">
+                                  <div class="card-body">
+                                    <div class="input-group">
+                                      <span class="input-group-text" id="addon-wrapping">Title</span>
+                                      <input type="text" class="form-control" placeholder="${movie.title}" aria-label="Username" aria-describedby="addon-wrapping">
+                                      </div>
+                                      <br>
+                                      <div class="input-group">
+                                      <span class="input-group-text" id="addon-wrapping">Rating</span>
+                                      <input type="text" class="form-control" placeholder="${movie.vote_average.toFixed(1)}" aria-label="Username" aria-describedby="addon-wrapping">
+                                    </div>
+                                    <br>
+                                    <button class="btn btn-outline-success" type="submit" id="edit${movie.id}">OK</button>
+                                    <button class="btn btn-outline-success" type="submit" id="del${movie.id}">Cancel</button>
+                                  </div>
+                              </div>`;
+
+                return document.getElementById('watchlist').innerHTML = html;
             })
+
+            okBtn(movie);
+
+
+
+
+            //edit
+            // document.getElementById(`edit${id}`).addEventListener('click', () => {
+            //     // console.log(overview);
+            //     fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
+            //         method:"PUT",
+            //         headers:{
+            //             'Content-type':'application/json'
+            //         },
+            //         body: JSON.stringify({movie}),
+            //     })
+            //         .then(res=>{
+            //             if(res.ok){
+            //                 alert("Add to your list!")
+            //             }
+            //         })
+            // })
 
             //del
             document.getElementById(`del${id}`).addEventListener('click', () => {
@@ -241,6 +278,16 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
         });
     } )
 })
+
+
+const okBtn = (movie) => {
+    $(`#edit${movie.id}`).click(e => {
+        e.preventDefault();
+        console.log("click");
+    })
+}
+
+
 
 // < p
 // className = "card-text" > < small
