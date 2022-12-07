@@ -70,10 +70,6 @@ function openNav(movie){
 
         const movieDetail = data;
         movieDescHTML(movieDetail);
-        let visId = document.getElementById('visually-hidden')
-        if(visId.textContent != 0){
-
-        }
     })
 }
 
@@ -119,11 +115,11 @@ const movieDescHTML = (data) => {
         console.log(id)
         put(data);
     })
-    //del
-    document.getElementById(`del${id}`).addEventListener('click', () => {
-        console.log(id)
-        del(data);
-    })
+    // //del
+    // document.getElementById(`del${id}`).addEventListener('click', () => {
+    //     console.log(id)
+    //     del(data);
+    // })
 
 }
 
@@ -168,3 +164,44 @@ btnSearch.addEventListener('click',function(e) {
     let name = inputSearch.value;
     getMovies(searchURl + '&query=' + name);
 });
+
+//watch list
+document.getElementById('nav-profile-tab').addEventListener('click',function (){
+    //data[0].id
+    fetch('https://coffee-burnt-hurricane.glitch.me/movies').then(res => res.json()).then(function (data){
+        document.getElementById('nav-profile').innerHTML = "";
+        data.forEach(movie => {
+            const {title,poster_path,vote_average,overview,id} = movie
+            const mlist = document.createElement('div');
+            mlist.setAttribute("id","searchListItem");
+            mlist.classList.add('container');
+            mlist.innerHTML =`
+            <div class="card" style="width: 18rem;">
+              <img src="${IMG_URL+poster_path}" class="card-img-top" alt="no-poster.png">
+              <div class="card-body">
+                <h5 class="card-title">${title}</h5>
+                <p class="card-text">${vote_average}</p>
+                 <button class="btn btn-outline-success" type="submit" id="edit${id}">EdiT</button>
+                 <button class="btn btn-outline-success" type="submit" id="del${id}">DEL</button>
+
+              </div>
+            </div>`
+
+            document.getElementById('nav-profile').appendChild(mlist);
+
+            //edit
+            document.getElementById(`edit${id}`).addEventListener('click', () => {
+                console.log(id)
+                put(data);
+            })
+
+            //del
+            document.getElementById(`del${id}`).addEventListener('click', () => {
+                console.log(id)
+                del(data);
+            })
+
+
+        });
+    } )
+})
