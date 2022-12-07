@@ -25,12 +25,12 @@ let btnSearch = document.getElementById('btn-search');
 let form = document.getElementById('form');
 let watchlistEl = document.getElementById('watchlist');
 
-console.log('window');
+
 getMovies(tmdb_API_URL);
 
 function getMovies(url){
     fetch(url).then(res => res.json()).then(data =>{
-        console.log(data);
+        //console.log(data);
         showmovies(data.results);
     })
 }
@@ -124,11 +124,7 @@ const movieDescHTML = (data) => {
         console.log(id)
         put(data);
     })
-    // //del
-    // document.getElementById(`del${id}`).addEventListener('click', () => {
-    //     console.log(id)
-    //     del(data);
-    // })
+
 
 }
 
@@ -150,21 +146,6 @@ function put(data){
         })
 }
 
-//del
-function del(data){
-    const {original_title, overview, release_date, tagline, id} = data;
-    fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
-        method:"DELETE",
-        headers:{
-            'Content-type':'application/json'
-        },
-    })
-        .then(res =>{
-            if(res.ok){
-                alert("Deleted from your list.")
-            }
-        })
-}
 
 //search
 btnSearch.addEventListener('click',function(e) {
@@ -178,42 +159,86 @@ btnSearch.addEventListener('click',function(e) {
 document.getElementById('nav-profile-tab').addEventListener('click',function (){
     //data[0].id
     fetch('https://coffee-burnt-hurricane.glitch.me/movies').then(res => res.json()).then(function (data){
+        console.log(data)
+        console.log(data[0].title);
         document.getElementById('watchlist').innerHTML = "";
         data.forEach(movie => {
-            const {title,poster_path,vote_average,overview,id} = movie
+            // const {title,poster_path,vote_average,overview,id} = movie;
+            let id;
             const mlist = document.createElement('div');
             mlist.setAttribute("id","searchListItem");
             mlist.classList.add('container');
-            mlist.innerHTML =`
+            if(movie.title === undefined){
+                mlist.innerHTML =`
                                 <div class="card" style="width: 18rem;">
-                                  <img src="${IMG_URL+poster_path}" class="card-img-top" alt="...">
+                                  <img src="${IMG_URL+movie.movie.poster_path}" class="card-img-top" alt="...">
                                   <div class="card-body">
-                                    <h5 class="card-title">${title}</h5>
-                                    <p class="card-text">${vote_average}</p>
-                                    <button class="btn btn-outline-success" type="submit" id="edit${id}">Edit</button>
-                                    <button class="btn btn-outline-success" type="submit" id="del${id}">Delete</button>
+                                    <h5 class="card-title">${movie.movie.title}</h5>
+                                    <p class="card-text">${movie.movie.vote_average}</p>
+                                    <button class="btn btn-outline-success" type="submit" id="edit${movie.movie.id}">Edit</button>
+                                    <button class="btn btn-outline-success" type="submit" id="del${movie.movie.id}">Delete</button>
                                   </div>
                               </div>`
-
+                id = movie.movie.id;
+            }else{
+                mlist.innerHTML = `
+                                <div class="card" style="width: 18rem;">
+                                  <img src="${IMG_URL + movie.poster_path}" class="card-img-top" alt="...">
+                                  <div class="card-body">
+                                    <h5 class="card-title">${movie.title}</h5>
+                                    <p class="card-text">${movie.vote_average}</p>
+                                    <button class="btn btn-outline-success" type="submit" id="edit${movie.id}">Edit</button>
+                                    <button class="btn btn-outline-success" type="submit" id="del${movie.id}">Delete</button>
+                                  </div>
+                              </div>`
+                id = movie.id;
+            }
             document.getElementById('watchlist').appendChild(mlist);
-
+            // console.log(movie.movie.movie)
+            // console.log(id)
+            movie.title = "new title";
+            movie.original_title = "new title"
             //edit
             document.getElementById(`edit${id}`).addEventListener('click', () => {
-                console.log(id)
-                put(data);
+                console.log(movie)
+                // console.log(overview);
+                fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
+                    method:"PUT",
+                    headers:{
+                        'Content-type':'application/json'
+                    },
+                    body: JSON.stringify({movie}),
+                })
+                    .then(res=>{
+                        if(res.ok){
+                            alert("Add to your list!")
+                        }
+                    })
             })
 
             //del
             document.getElementById(`del${id}`).addEventListener('click', () => {
-                console.log(id)
-                del(data);
+                //console.log("del is working")
+                //console.log(id)
+                    console.log('del data ' + id)
+                    fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
+                        method:"DELETE",
+                        headers:{
+                            'Content-type':'application/json'
+                        },
+                    })
+                        .then(res =>{
+                            if(res.ok){
+                                alert("Deleted from your list.")
+                            }
+                        })
             })
+
 
 
         });
     } )
 })
-
 
 // < p
 // className = "card-text" > < small
