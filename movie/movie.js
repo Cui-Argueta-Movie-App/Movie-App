@@ -86,32 +86,33 @@ const movieDescHTML = (data) => {
     movieElement.setAttribute("id","movieDescCard");
     movieElement.innerHTML =
         `<div class="card mb-3" style="max-width: 100%; height: 100%;">
-      <div class="row g-0">
-        <div class="col-md-5">
-          <img src="${IMG_URL+poster_path}" class="img-fluid rounded-start" alt="...">
-          <span id="close" onclick="this.parentNode.parentNode.remove(); return false;"><i class="fa-solid fa-x"></i></span>
-        </div>
-        <div class="col-md-7">
-          <div class="card-body">
-          <p class="visually-hidden" id="visually-hidden">${id}</p>
-            <h5 class="card-title">${original_title}</h5>
-            <p class="card-text">${tagline}</p>
-            <p class="card-text">${release_date}</p>
-            <h6 class="card-text">${overview}</h6>
-            
-            
-             <p className = "card-text">
-                 <small className="text-muted">${data.genres[0].name}</small>, 
-                 <small className="text-muted">${data.genres[1].name}</small>, 
-                 <small className="text-muted">${data.genres[2].name}</small>
-             </p>
-            
-            
-            <button class="btn btn-outline-success add" type="submit" id="add${id}">Add</button>
-          </div>
-        </div>
+  <div class="row g-0">
+  
+    <div class="col-md-5">
+      <img src="${IMG_URL+poster_path}" class="rounded-start w-100" alt="...">
+      <button type="button" class="btn-close p-0 fs-5" aria-label="Close" id="close" onclick="this.parentNode.parentNode.remove(); return false;"></button>
+    </div>
+    
+    <div class="col-md-7 d-flex flex-column">
+    <div class="card-header">
+        <p class="visually-hidden" id="visually-hidden">${id}</p>
+        <h1 class="card-title">${original_title} <span class="card-text fs-5">(${release_date})</span></h1>
+    </div>
+    <h5 class="card-text text-muted my-4 px-2" id="tagline">${tagline}</h5>
+    
+      <div class="card-body">
+        <p class="card-text fs-3">${overview}</p>
+         <h5 className="card-text">
+             <small className="text-muted">${data.genres[0].name}</small>, 
+             <small className="text-muted">${data.genres[1].name}</small>, 
+             <small className="text-muted">${data.genres[2].name}</small>
+         </h5>
+        <button class="btn btn-outline-success add w-100" type="submit" id="add${id}">Add</button>
       </div>
-    </div>`
+      
+      </div>
+    </div>
+</div>`
 
     detail.appendChild(movieElement)
 

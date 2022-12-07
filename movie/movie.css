@@ -1,6 +1,19 @@
 #movieDescCard #close {
-    position: absolute;
-    left: 30px;
     font-size: 2rem;
     color: white;
+    position: absolute;
+    right: 40px;
+    top: 20px;
+}
+
+#searchListItem {
+    margin: 5rem 1rem 1rem;
+}
+
+#movieDescCard img {
+    height: 600px;
+}
+
+#movieDescCard #tagline {
+    flex-grow: 8 !important;
 }
