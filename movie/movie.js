@@ -22,7 +22,8 @@ let main = document.getElementById('main');
 let detail = document.getElementById('detail');
 let inputSearch = document.getElementById('input-search');
 let btnSearch = document.getElementById('btn-search');
-let form = document.getElementById('form')
+let form = document.getElementById('form');
+let watchlistEl = document.getElementById('watchlist');
 
 console.log('window');
 getMovies(tmdb_API_URL);
@@ -97,7 +98,15 @@ const movieDescHTML = (data) => {
             <p class="card-text">${tagline}</p>
             <p class="card-text">${release_date}</p>
             <h6 class="card-text">${overview}</h6>
-            <p class="card-text"><small class="text-muted">${data.genres[0].name}</small>, <small class="text-muted">${data.genres[1].name}</small>, <small class="text-muted">${data.genres[2].name}</small></p>
+            
+            
+             <p className = "card-text">
+                 <small className="text-muted">${data.genres[0].name}</small>, 
+                 <small className="text-muted">${data.genres[1].name}</small>, 
+                 <small className="text-muted">${data.genres[2].name}</small>
+             </p>
+            
+            
             <button class="btn btn-outline-success add" type="submit" id="add${id}">Add</button>
           </div>
         </div>
@@ -169,25 +178,24 @@ btnSearch.addEventListener('click',function(e) {
 document.getElementById('nav-profile-tab').addEventListener('click',function (){
     //data[0].id
     fetch('https://coffee-burnt-hurricane.glitch.me/movies').then(res => res.json()).then(function (data){
-        document.getElementById('nav-profile').innerHTML = "";
+        document.getElementById('watchlist').innerHTML = "";
         data.forEach(movie => {
             const {title,poster_path,vote_average,overview,id} = movie
             const mlist = document.createElement('div');
             mlist.setAttribute("id","searchListItem");
             mlist.classList.add('container');
             mlist.innerHTML =`
-            <div class="card" style="width: 18rem;">
-              <img src="${IMG_URL+poster_path}" class="card-img-top" alt="no-poster.png">
-              <div class="card-body">
-                <h5 class="card-title">${title}</h5>
-                <p class="card-text">${vote_average}</p>
-                 <button class="btn btn-outline-success" type="submit" id="edit${id}">EdiT</button>
-                 <button class="btn btn-outline-success" type="submit" id="del${id}">DEL</button>
+                                <div class="card" style="width: 18rem;">
+                                  <img src="${IMG_URL+poster_path}" class="card-img-top" alt="...">
+                                  <div class="card-body">
+                                    <h5 class="card-title">${title}</h5>
+                                    <p class="card-text">${vote_average}</p>
+                                    <button class="btn btn-outline-success" type="submit" id="edit${id}">Edit</button>
+                                    <button class="btn btn-outline-success" type="submit" id="del${id}">Delete</button>
+                                  </div>
+                              </div>`
 
-              </div>
-            </div>`
-
-            document.getElementById('nav-profile').appendChild(mlist);
+            document.getElementById('watchlist').appendChild(mlist);
 
             //edit
             document.getElementById(`edit${id}`).addEventListener('click', () => {
@@ -205,3 +213,10 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
         });
     } )
 })
+
+
+// < p
+// className = "card-text" > < small
+// className = "text-muted" >${data.genres[0].name} < /small>, <small className="text-muted">${data.genres[1].name}</sm
+// all >, <small className="text-muted">${data.genres[2].name}</small>
+// </p>
