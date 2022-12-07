@@ -1,4 +1,3 @@
-// const omdb = OMDB_API;
 const tmdb = TMDB_API;
 const BASE_URL = 'https://api.themoviedb.org/3';
 const tmdb_API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&api_key='+ tmdb;
@@ -12,7 +11,7 @@ let inputSearch = document.getElementById('input-search');
 let btnSearch = document.getElementById('btn-search');
 let form = document.getElementById('form')
 
-
+console.log('window');
 getMovies(tmdb_API_URL);
 
 function getMovies(url){
@@ -32,9 +31,7 @@ function showmovies(data){
     <div>
           <img src="${IMG_URL+poster_path}" alt="no-poster.png">
           <h3>${title}</h3>
-          <p>${vote_average}</p>
-          <button class="know-more" id="${id}">Know More</button
-            </div>
+
         `
 
         main.appendChild(movieElement)
@@ -61,6 +58,7 @@ function openNav(movie){
 }
 
 
+
 const movieDescHTML = (data) => {
     console.log(detail);
     console.log(data);
@@ -68,22 +66,43 @@ const movieDescHTML = (data) => {
     const {original_title, overview, release_date, tagline, poster_path, id } = data;
 
     const movieElement = document.createElement('div');
-    movieElement.innerHTML =
-        `<div>
-              <img src="${IMG_URL+poster_path}" alt="no-poster.png">
-              <p class="visually-hidden" id="visually-hidden">${id}</p>
-              <h3>${original_title}</h3>
-              <p>${tagline}</p>
-              <p>${release_date}</p>
-              <p>${overview}</p>
-              <p>${data.genres[0].name}</p>
-            </div>`
-
-    detail.appendChild(movieElement)
 
 
 }
 
+//put
+function put(data){
+    const {original_title, overview, release_date, tagline, id} = data;
+    console.log("put: " + data.id);
+    fetch('https://coffee-burnt-hurricane.glitch.me/movies',{
+        method:"POST",
+        headers:{
+            'Content-type':'application/json'
+        },
+        body: JSON.stringify(data),
+    })
+        .then(res=>{
+            if(res.ok){
+                alert("Add to your list!")
+            }
+        })
+}
+
+//del
+function del(data){
+    const {original_title, overview, release_date, tagline, id} = data;
+    fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
+        method:"DELETE",
+        headers:{
+            'Content-type':'application/json'
+        },
+    })
+        .then(res =>{
+            if(res.ok){
+                alert("Deleted from your list.")
+            }
+        })
+}
 
 //search
 btnSearch.addEventListener('click',function(e) {
@@ -92,5 +111,3 @@ btnSearch.addEventListener('click',function(e) {
     let name = inputSearch.value;
     getMovies(searchURl + '&query=' + name);
 });
-
-
