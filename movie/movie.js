@@ -31,7 +31,9 @@ function showmovies(data){
     <div>
           <img src="${IMG_URL+poster_path}" alt="no-poster.png">
           <h3>${title}</h3>
-
+          <p>${vote_average}</p>
+          <button class="know-more" id="${id}">Know More</button>
+            </div>
         `
 
         main.appendChild(movieElement)
@@ -66,7 +68,37 @@ const movieDescHTML = (data) => {
     const {original_title, overview, release_date, tagline, poster_path, id } = data;
 
     const movieElement = document.createElement('div');
+    movieElement.innerHTML =
+        `<div>
+        <span id="close" onclick="this.parentNode.parentNode.remove(); return false;">Close</span>
+              <img src="${IMG_URL+poster_path}" alt="no-poster.png">
+              <p class="visually-hidden" id="visually-hidden">${id}</p>
+              <h3>${original_title}</h3>
+              <p>${tagline}</p>
+              <p>${release_date}</p>
+              <p>${overview}</p>
+              <p>${data.genres[0].name}</p>
+              <span class="add" id="add${id}">Add</span>
+              <span class="del" id="del${id}">del</span>
 
+            </div>`
+
+    detail.appendChild(movieElement)
+
+    document.getElementById('close').onclick = function(){
+        this.parentNode.parentNode.remove();
+        return false;
+    }
+    //add
+    document.getElementById(`add${id}`).addEventListener('click', () => {
+        console.log(id)
+        put(data);
+    })
+    //del
+    document.getElementById(`del${id}`).addEventListener('click', () => {
+        console.log(id)
+        del(data);
+    })
 
 }
 
