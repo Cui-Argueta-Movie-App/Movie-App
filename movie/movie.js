@@ -1,4 +1,3 @@
-// const omdb = OMDB_API;
 const tmdb = TMDB_API;
 const BASE_URL = 'https://api.themoviedb.org/3';
 const tmdb_API_URL = BASE_URL + '/discover/movie?sort_by=popularity.desc&api_key='+ tmdb;
@@ -12,7 +11,7 @@ let inputSearch = document.getElementById('input-search');
 let btnSearch = document.getElementById('btn-search');
 let form = document.getElementById('form')
 
-
+console.log('window');
 getMovies(tmdb_API_URL);
 
 function getMovies(url){
@@ -33,8 +32,7 @@ function showmovies(data){
           <img src="${IMG_URL+poster_path}" alt="no-poster.png">
           <h3>${title}</h3>
           <p>${vote_average}</p>
-          <p>Overview:<br>${overview}</p>
-          <button class="know-more" id="${id}">Know More</button
+          <button class="know-more" id="${id}">Know More</button>
             </div>
         `
 
@@ -54,19 +52,89 @@ function openNav(movie){
 
         const movieDetail = data;
         movieDescHTML(movieDetail);
+        let visId = document.getElementById('visually-hidden')
+        if(visId.textContent != 0){
 
+        }
     })
 }
+
 
 
 const movieDescHTML = (data) => {
     console.log(detail);
     console.log(data);
 
+    const {original_title, overview, release_date, tagline, poster_path, id } = data;
 
+    const movieElement = document.createElement('div');
+    movieElement.innerHTML =
+        `<div>
+        <span id="close" onclick="this.parentNode.parentNode.remove(); return false;">Close</span>
+              <img src="${IMG_URL+poster_path}" alt="no-poster.png">
+              <p class="visually-hidden" id="visually-hidden">${id}</p>
+              <h3>${original_title}</h3>
+              <p>${tagline}</p>
+              <p>${release_date}</p>
+              <p>${overview}</p>
+              <p>${data.genres[0].name}</p>
+              <span class="add" id="add${id}">Add</span>
+              <span class="del" id="del${id}">del</span>
+
+            </div>`
+
+    detail.appendChild(movieElement)
+
+    document.getElementById('close').onclick = function(){
+        this.parentNode.parentNode.remove();
+        return false;
+    }
+    //add
+    document.getElementById(`add${id}`).addEventListener('click', () => {
+        console.log(id)
+        put(data);
+    })
+    //del
+    document.getElementById(`del${id}`).addEventListener('click', () => {
+        console.log(id)
+        del(data);
+    })
 
 }
 
+//put
+function put(data){
+    const {original_title, overview, release_date, tagline, id} = data;
+    console.log("put: " + data.id);
+    fetch('https://coffee-burnt-hurricane.glitch.me/movies',{
+        method:"POST",
+        headers:{
+            'Content-type':'application/json'
+        },
+        body: JSON.stringify(data),
+    })
+        .then(res=>{
+            if(res.ok){
+                alert("Add to your list!")
+            }
+        })
+}
+
+//del
+function del(data){
+    const {original_title, overview, release_date, tagline, id} = data;
+    fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
+        method:"DELETE",
+        headers:{
+            'Content-type':'application/json'
+        },
+    })
+        .then(res =>{
+            if(res.ok){
+                alert("Deleted from your list.")
+            }
+        })
+}
 
 //search
 btnSearch.addEventListener('click',function(e) {
@@ -75,5 +143,3 @@ btnSearch.addEventListener('click',function(e) {
     let name = inputSearch.value;
     getMovies(searchURl + '&query=' + name);
 });
-
-
