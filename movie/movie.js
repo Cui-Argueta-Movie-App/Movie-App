@@ -54,7 +54,7 @@ function showmovies(data){
               <img src="${IMG_URL+poster_path}" class="card-img-top" alt="no-poster.png">
               <div class="card-body">
                 <h5 class="card-title">${title}</h5>
-                <p class="card-text">${vote_average}</p>
+                <p class="card-text">Rate：${vote_average}</p>
                  <button class="btn btn-outline-success" type="submit" id="${id}">More Info</button>
               </div>
             </div>`
@@ -186,7 +186,7 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
                                   <div class="card-body">
                                     <h5 class="card-title">${movie.movie.title}</h5>
                                     <p class="card-text">${movie.movie.vote_average}</p>
-                                    <button class="btn btn-outline-success" type="submit" id="edit${movie.movie.id}">Edit</button>
+                                    <button class="btn btn-outline-success" type="submit" id="edit${movie.movie.id}">okEdit</button>
                                     <button class="btn btn-outline-success" type="submit" id="del${movie.movie.id}">Delete</button>
                                   </div>
                               </div>`
@@ -196,8 +196,9 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
                                 <div class="card" style="width: 18rem;">
                                   <img src="${IMG_URL + movie.poster_path}" class="card-img-top" alt="...">
                                   <div class="card-body">
-                                    <h5 class="card-title">${movie.title}</h5>
-                                    <p class="card-text">${movie.vote_average}</p>
+                                    <h5 class="card-title">${movie.original_title}</h5>
+                                    <p class="card-text">${movie.tagline}</p>
+                                    <p class="card-text">Rate：${movie.vote_average}</p>
                                     <button class="btn btn-outline-success" type="submit" id="edit${movie.id}">Edit</button>
                                     <button class="btn btn-outline-success" type="submit" id="del${movie.id}">Delete</button>
                                   </div>
@@ -216,44 +217,56 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
                                   <img src="${IMG_URL + movie.poster_path}" class="card-img-top" alt="...">
                                   <div class="card-body">
                                     <div class="input-group">
-                                      <span class="input-group-text" id="addon-wrapping">Title</span>
-                                      <input type="text" class="form-control" placeholder="${movie.title}" aria-label="Username" aria-describedby="addon-wrapping">
+                                      <span class="input-group-text" id="addon-wrapping">NOTE</span>
+                                      <input id='titleInput' type="text" class="form-control" placeholder="" aria-label="Username" aria-describedby="addon-wrapping">
                                       </div>
                                       <br>
                                       <div class="input-group">
                                       <span class="input-group-text" id="addon-wrapping">Rating</span>
-                                      <input type="text" class="form-control" placeholder="${movie.vote_average.toFixed(1)}" aria-label="Username" aria-describedby="addon-wrapping">
+                                      <input id='ratingInput' type="text" class="form-control" placeholder="${movie.vote_average}" aria-label="Username" aria-describedby="addon-wrapping">
                                     </div>
                                     <br>
-                                    <button class="btn btn-outline-success" type="submit" id="edit${movie.id}">OK</button>
-                                    <button class="btn btn-outline-success" type="submit" id="del${movie.id}">Cancel</button>
+                                    <button class="btn btn-outline-success" type="submit" id="ok${movie.id}">OK</button>
+                                    <button class="btn btn-outline-success" type="submit" id="cel${movie.id}" >Cancel</button>
                                   </div>
                               </div>`;
+                // console.log(movie.id)
+                document.getElementById('watchlist').innerHTML = html;
 
-                return document.getElementById('watchlist').innerHTML = html;
+
+                //edit ok
+                document.getElementById(`ok${movie.id}`).addEventListener('click', () => {
+                    // console.log(movie);
+                    movie.tagline = document.getElementById('titleInput').value;
+                    movie.vote_average = document.getElementById('ratingInput').value;
+                    fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
+                        method:"PUT",
+                        headers:{
+                            'Content-type':'application/json'
+                        },
+                        body: JSON.stringify(movie),
+                    })
+                        .then(res=>{
+                            if(res.ok){
+                                alert("Add to your list!");
+                                location.reload();
+                            }
+                        })
+                })
+
+
+                //cancel
+                document.getElementById(`cel${movie.id}`).addEventListener('click',function (){
+                    location.reload();
+                })
+
+
             })
 
-            okBtn(movie);
 
 
 
 
-            //edit
-            // document.getElementById(`edit${id}`).addEventListener('click', () => {
-            //     // console.log(overview);
-            //     fetch(`https://coffee-burnt-hurricane.glitch.me/movies/${id}`,{
-            //         method:"PUT",
-            //         headers:{
-            //             'Content-type':'application/json'
-            //         },
-            //         body: JSON.stringify({movie}),
-            //     })
-            //         .then(res=>{
-            //             if(res.ok){
-            //                 alert("Add to your list!")
-            //             }
-            //         })
-            // })
 
             //del
             document.getElementById(`del${id}`).addEventListener('click', () => {
@@ -280,12 +293,7 @@ document.getElementById('nav-profile-tab').addEventListener('click',function (){
 })
 
 
-const okBtn = (movie) => {
-    $(`#edit${movie.id}`).click(e => {
-        e.preventDefault();
-        console.log("click");
-    })
-}
+
 
 
 
